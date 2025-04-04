@@ -2,15 +2,12 @@
 
 A new Flutter project.
 
-## Getting Started
+## Datos
 
-This project is a starting point for a Flutter application.
+Jonathan Catalan Maldonado
+24 años
 
-A few resources to get you started if this is your first Flutter project:
+## Descripcion
+El programa ejecuta un emulador de android por medio de chrome en el cual utilizamos diferentes variables para cambiar tanto colores como iconos y agregar funciones.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Se realizaron cambios de color, titulos e iconos.
