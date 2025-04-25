@@ -25,7 +25,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _counter++;
     });
-    logger.i("Incremented count: $_counter");  
+    logger.i("Incremented counter: $_counter");  
   }
 
   void _decrementCounter() {
