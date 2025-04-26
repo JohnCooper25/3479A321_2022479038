@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logger/logger.dart';
 import 'pages/home.page.dart'; 
+import 'pages/list_content.dart';
+import 'pages/about.dart';  
 
 
 final logger = Logger();

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:logger/logger.dart';
+import 'list_content.dart';
+import 'about.dart';
 
 class MyHomePage extends StatefulWidget {
   final String title;
@@ -55,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 'Assets/Icons/ICON_GAME.svg',
                 semanticsLabel: 'Dart Logo',
               ),
-              const SizedBox(height: 20,),
+              const SizedBox(height: 20),
 
               // Card con todo el contenido
               SizedBox(
@@ -84,22 +86,22 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 20,),
+                        const SizedBox(height: 20),
                         const Text(
-                          'Flutter es un framework UI de codigo abierto creado por Google para construir  interfaces nativas eficientemente',
+                          'Flutter es un framework UI de código abierto creado por Google para construir interfaces nativas eficientemente.',
                           textAlign: TextAlign.justify,
                         ),
-                        const SizedBox(height: 20,),
-                
+                        const SizedBox(height: 20),
+
                         // Contador
-                        const Text('Has presionado el boton muchas veces:'),
+                        const Text('Has presionado el botón muchas veces:'),
                         Text(
                           '$_counter',
                           style: Theme.of(context).textTheme.headlineMedium,
                         ),
-                
-                        const SizedBox(height: 20,),
-                
+
+                        const SizedBox(height: 20),
+
                         // Botones dentro de la Card
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -126,10 +128,34 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
               ),
+
+              const SizedBox(height: 20),
+
+              // Botones para las nuevas pantallas
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const ListContent()),
+                  );
+                },
+                child: const Text('Ir a Lista de Contenido'),
+              ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const About()),
+                  );
+                },
+                child: const Text('Ir a Sobre'),
+              ),
             ],
           ),
         ),
       ),
+      
     );
   }
 }
