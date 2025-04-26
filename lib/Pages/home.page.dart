@@ -86,7 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                         const SizedBox(height: 20,),
                         const Text(
-                          'Flutter es un framework UI de codigo abierto creado por Google para construir hermosas interfaces nativas en tiempo récord.',
+                          'Flutter es un framework UI de codigo abierto creado por Google para construir  interfaces nativas eficientemente',
                           textAlign: TextAlign.justify,
                         ),
                         const SizedBox(height: 20,),
@@ -130,9 +130,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
       ),
-      // Botón flotante eliminado
-      // floatingActionButton: null,
-      // bottomNavigationBar eliminado también
     );
   }
 }
