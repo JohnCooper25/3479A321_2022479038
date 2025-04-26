@@ -1,44 +1,60 @@
 import 'package:flutter/material.dart';
+import 'about.dart';
 
 class ListContent extends StatelessWidget {
   const ListContent({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final List<String> elementos = [
+      'Hola',
+      'Como',
+      'Estas',
+      'Bienvenido',
+      'Flutter',
+      'Dart',
+    ];
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Lista de Contenidos'),
+        title: const Text('Pagina 2 - Lista'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'Pantalla para seccion de listas.',
-              style: TextStyle(fontSize: 18),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Boton 1 presionado')),
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              itemCount: elementos.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  leading: const Icon(Icons.list),
+                  title: Text(elementos[index]),
                 );
               },
-              child: const Text('Boton 1'),
             ),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: () {
-              
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Boton 2 presionado')),
-                );
-              },
-              child: const Text('Boton 2'),
-            ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const About()),
+                  );
+                },
+                child: const Text('Ir a Pagina 3 (About)'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('Volver a Pagina 1 (Home)'),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+        ],
       ),
     );
   }

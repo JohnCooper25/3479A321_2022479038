@@ -7,23 +7,19 @@ class About extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Sobre la Aplicacion'),
+        title: const Text('Pagina 3 - About'),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              'Esta aplicacion fue creada para demostrar navegacion y manejo de estado en Flutter.',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 18),
-            ),
-            const SizedBox(height: 20),
+            const Text('Contenido libre de About', style: TextStyle(fontSize: 18)),
+            const SizedBox(height: 30),
             ElevatedButton(
               onPressed: () {
-                Navigator.pop(context); // Vuelve a la pantalla anterior
+                Navigator.pop(context);
               },
-              child: const Text('Volver'),
+              child: const Text('Volver a Pagina 2 (Lista)'),
             ),
           ],
         ),
