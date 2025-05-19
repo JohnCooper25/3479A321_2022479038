@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:logger/logger.dart';
+import 'package:provider/provider.dart';
+import 'provider/app_data.dart';
 import 'list_content.dart';
+
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -18,52 +21,16 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final logger = Logger();
 
-  @override
-  void initState() {
-    super.initState();
-    logger.i("initState");
+  _MyHomePageState() {
+    print("Constructor de _MyHomePageState");
     print("mounted: $mounted");
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    logger.i("didChangeDependencies");
-  }
-
-  @override
-  void didUpdateWidget(covariant MyHomePage oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    logger.i("didUpdateWidget");
-  }
-
-  @override
-  void reassemble() {
-    super.reassemble();
-    logger.i("reassemble");
-  }
-
-  @override
-  void deactivate() {
-    super.deactivate();
-    logger.w("deactivate");
-  }
-
-  @override
-  void dispose() {
-    logger.w("dispose");
-    super.dispose();
-  }
-
-  @override
-  void setState(VoidCallback fn) {
-    logger.i("setState");
-    super.setState(fn);
-  }
-
-  @override
   Widget build(BuildContext context) {
-    logger.i("build: reconstruyendo MyHomePage");
+    print("build");
+
+    final counterValue = context.watch<AppData>().counter;  // Obtiene el contador desde Provider
 
     return Scaffold(
       appBar: AppBar(
@@ -94,13 +61,37 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: Column(
                       children: [
                         const Text(
-                          'Página 1 - Home',
+                          'Pagina 1 - Home',
                           style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 20),
-                        const Text(
-                          'Bienvenido a la pagina principal.',
-                          textAlign: TextAlign.center,
+                        Text(
+                          'Contador: $counterValue',
+                          style: const TextStyle(fontSize: 20),
+                        ),
+                        const SizedBox(height: 30),
+                        ElevatedButton(
+                          onPressed: () {
+                            // En vez de setState, incrementa el contador desde Provider
+                            context.read<AppData>().incrementCounter();
+                          },
+                          child: const Text('Incrementar contador'),
+                        ),
+                        const SizedBox(height: 10),
+                        ElevatedButton(
+                          onPressed: () {
+                            // Decrementar contador
+                            context.read<AppData>().decrementCounter();
+                          },
+                          child: const Text('Decrementar contador'),
+                        ),
+                        const SizedBox(height: 10),
+                        ElevatedButton(
+                          onPressed: () {
+                            // Resetear contador
+                            context.read<AppData>().resetCounter();
+                          },
+                          child: const Text('Resetear contador'),
                         ),
                         const SizedBox(height: 30),
                         ElevatedButton(
