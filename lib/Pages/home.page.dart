@@ -9,135 +9,116 @@ class MyHomePage extends StatefulWidget {
   final String title;
 
   @override
-  
   State<MyHomePage> createState() {
-    print("createState: creando el estado de MyHomePage"); 
+    print("createState: creando el estado de MyHomePage");
     return _MyHomePageState();
   }
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  final logger = Logger();
 
-  
-  _MyHomePageState() {
-    print("Constructor de _MyHomePageState el mounted = $mounted");
-  }
-
- 
   @override
   void initState() {
     super.initState();
-    print("initState llamado");
+    logger.i("initState");
+    print("mounted: $mounted");
   }
 
- 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    print("didChangeDependencies llamado");
+    logger.i("didChangeDependencies");
   }
 
- 
+  @override
+  void didUpdateWidget(covariant MyHomePage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    logger.i("didUpdateWidget");
+  }
+
+  @override
+  void reassemble() {
+    super.reassemble();
+    logger.i("reassemble");
+  }
+
+  @override
+  void deactivate() {
+    super.deactivate();
+    logger.w("deactivate");
+  }
+
+  @override
+  void dispose() {
+    logger.w("dispose");
+    super.dispose();
+  }
+
+  @override
+  void setState(VoidCallback fn) {
+    logger.i("setState");
+    super.setState(fn);
+  }
+
   @override
   Widget build(BuildContext context) {
-    print("build llamado");
+    logger.i("build: reconstruyendo MyHomePage");
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('Has presionado el botón muchas veces:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: _buildBottomButtons(),
-    );
-  }
-
-
-  @override
-  void didUpdateWidget(MyHomePage oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    print("didUpdateWidget llamado");
-  }
-
-  
-  @override
-  void deactivate() {
-    super.deactivate();
-    print("deactivate llamado");
-  }
-
-
-  @override
-  void dispose() {
-    super.dispose();
-    print("dispose llamado");
-  }
-
-  @override
-  void reassemble() {
-    super.reassemble();
-    print("reassemble llamado");
-  }
-
-  void _incrementCounter() {
-    print("setState: incrementar");
-    setState(() {
-      _counter++;
-    });
-  }
-
-  //  Decrementa el contador y actualiza la UI
-  void _decrementCounter() {
-    print("setState: decrementar");
-    setState(() {
-      _counter--;
-    });
-  }
-
-  // Reinicia el contador y actualiza la UI
-  void _resetCounter() {
-    print("🔄 setState: resetear");
-    setState(() {
-      _counter = 0;
-    });
-  }
-
-  // Barra inferior con los botones
-  Widget _buildBottomButtons() {
-    return BottomAppBar(
-      shape: const CircularNotchedRectangle(),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            IconButton(
-              onPressed: _decrementCounter,
-              icon: const Icon(Icons.remove, size: 30),
-              tooltip: 'Decrementar',
-            ),
-            IconButton(
-              onPressed: _resetCounter,
-              icon: const Icon(Icons.refresh, size: 30),
-              tooltip: 'Reiniciar',
-            ),
-            IconButton(
-              onPressed: _incrementCounter,
-              icon: const Icon(Icons.add, size: 30),
-              tooltip: 'Incrementar',
-            ),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              SvgPicture.asset(
+                'Assets/Icons/ICON_GAME.svg',
+                semanticsLabel: 'Dart Logo',
+              ),
+              const SizedBox(height: 20),
+              SizedBox(
+                width: 550,
+                height: 450,
+                child: Card(
+                  margin: const EdgeInsets.all(20),
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      children: [
+                        const Text(
+                          'Página 1 - Home',
+                          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 20),
+                        const Text(
+                          'Bienvenido a la pagina principal.',
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 30),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => const ListContent()),
+                            );
+                          },
+                          child: const Text('Ir a Pagina 2 (Lista)'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
