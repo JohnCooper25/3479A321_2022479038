@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';  // Importa Provider aquí
 import 'about.dart';
+import '../provider/app_data.dart';  // Ajusta la ruta según tu estructura
 
 class ListContent extends StatelessWidget {
   const ListContent({super.key});
@@ -32,6 +34,18 @@ class ListContent extends StatelessWidget {
               },
             ),
           ),
+          const SizedBox(height: 20),
+
+          
+          Consumer<AppData>(
+            builder: (context, appData, child) {
+              return Text(
+                'Contador: ${appData.counter}',
+                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              );
+            },
+          ),
+
           const SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
