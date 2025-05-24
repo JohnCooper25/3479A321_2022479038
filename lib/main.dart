@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logger/logger.dart';
-
+import '../Services/data_base.dart';
 import 'pages/home.page.dart';
 import 'provider/app_data.dart';
 
 final logger = Logger();
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+  await DatabaseHelper().initializeDatabase();
+
   runApp(
     ChangeNotifierProvider<AppData>(
       create: (context) => AppData(),

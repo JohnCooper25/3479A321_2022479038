@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../provider/app_data.dart';
+import 'activities_page.dart';
 import 'list_content.dart';
 import 'about.dart';
 
@@ -27,6 +29,19 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _loadPreferences();
+  }
+
+  void _loadPreferences() async {
+    final prefs = await SharedPreferences.getInstance();
+    final savedCanReset = prefs.getBool('canResetCounter') ?? true;
+    final appData = Provider.of<AppData>(context, listen: false);
+    appData.canResetCounter = savedCanReset;
+  }
+
+  @override
   Widget build(BuildContext context) {
     print("build");
 
@@ -38,7 +53,6 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
 
-     
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -85,13 +99,24 @@ class _MyHomePageState extends State<MyHomePage> {
             ListTile(
               leading: const Icon(Icons.room_preferences),
               title: const Text('Preferencias'),
+              onTap: () async {
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const PreferencesPage()),
+                );
+                _loadPreferences(); 
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.history),
+              title: const Text('Actividades'),
               onTap: () {
-              Navigator.pushReplacement(
-                context, 
-                MaterialPageRoute(builder: (context) => const PreferencesPage()),
-              );
-            },
-          ),
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ActivitiesPage()),
+                );
+              },
+            ),
           ],
         ),
       ),

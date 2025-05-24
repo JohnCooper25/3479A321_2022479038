@@ -91,19 +91,6 @@ class About extends StatelessWidget {
 
                 const SizedBox(height: 20),
 
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text('Permitir reiniciar contador'),
-                    Switch(
-                      value: appData.canResetCounter,
-                      onChanged: (value) {
-                        appData.canResetCounter = value;
-                      },
-                    ),
-                  ],
-                ),
-
                 const SizedBox(height: 30),
 
                 Text(
