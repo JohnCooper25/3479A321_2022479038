@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';  // Importa Provider aquí
+import 'package:provider/provider.dart';
 import 'about.dart';
-import '../provider/app_data.dart';  // Ajusta la ruta según tu estructura
+import '../provider/app_data.dart';
+import '../Pages/home.page.dart'; 
+import '../Pages/preference.dart';
 
 class ListContent extends StatelessWidget {
   const ListContent({super.key});
@@ -21,6 +23,59 @@ class ListContent extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Pagina 2 - Lista'),
       ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Text(
+                'Menú de Navegación',
+                style: TextStyle(color: Colors.white, fontSize: 24),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.home),
+              title: const Text('Home'),
+              onTap: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const MyHomePage(title: 'Flutter Demo Home Page')),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.list),
+              title: const Text('Lista'),
+              onTap: () {
+                Navigator.pop(context); // Ya estamos en esta página
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.info),
+              title: const Text('About'),
+              onTap: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const About()),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.room_preferences),
+              title: const Text('Preferencias'),
+              onTap: () {
+              Navigator.pushReplacement(
+                context, 
+                MaterialPageRoute(builder: (context) => const PreferencesPage()),
+              );
+            },
+          ),
+          ],
+        ),
+      ),
       body: Column(
         children: [
           Expanded(
@@ -35,8 +90,6 @@ class ListContent extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20),
-
-          
           Consumer<AppData>(
             builder: (context, appData, child) {
               return Text(
@@ -44,28 +97,6 @@ class ListContent extends StatelessWidget {
                 style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               );
             },
-          ),
-
-          const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const About()),
-                  );
-                },
-                child: const Text('Ir a Pagina 3 (About)'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text('Volver a Pagina 1 (Home)'),
-              ),
-            ],
           ),
           const SizedBox(height: 20),
         ],

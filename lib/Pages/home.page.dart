@@ -1,10 +1,13 @@
+import 'package:application_laboratorio3/Pages/preference.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../provider/app_data.dart';
+import 'activities_page.dart';
 import 'list_content.dart';
-
+import 'about.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -13,7 +16,6 @@ class MyHomePage extends StatefulWidget {
 
   @override
   State<MyHomePage> createState() {
-    print("createState: creando el estado de MyHomePage");
     return _MyHomePageState();
   }
 }
@@ -27,10 +29,23 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   @override
-Widget build(BuildContext context) {
-  print("build");
+  void initState() {
+    super.initState();
+    _loadPreferences();
+  }
 
-  final counterValue = context.watch<AppData>().counter;  // Obtiene el contador desde Provider
+  void _loadPreferences() async {
+    final prefs = await SharedPreferences.getInstance();
+    final savedCanReset = prefs.getBool('canResetCounter') ?? true;
+    final appData = Provider.of<AppData>(context, listen: false);
+    appData.canResetCounter = savedCanReset;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    print("build");
+
+    final counterValue = context.watch<AppData>().counter;
 
   return Scaffold(
     appBar: AppBar(
@@ -89,7 +104,7 @@ Widget build(BuildContext context) {
                               onPressed: () {
                                 appData.incrementCounter();
                               },
-                              child: const Text('Subir.'),
+                              child: const Text('Subir'),
                             ),
                             const SizedBox(width: 20),
                             ElevatedButton(
@@ -98,7 +113,7 @@ Widget build(BuildContext context) {
                                       appData.decrementCounter();
                                     }
                                   : null,
-                              child: const Text('Bajar.'),
+                              child: const Text('Bajar'),
                             ),
                           ],
                         ),

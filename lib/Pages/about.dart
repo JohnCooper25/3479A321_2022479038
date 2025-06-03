@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../provider/app_data.dart';
+import '../Pages/home.page.dart';       
+import '../Pages/list_content.dart';   
+import '../Pages/preference.dart';
 
 class About extends StatelessWidget {
   const About({super.key});
@@ -13,9 +16,61 @@ class About extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Pagina 3 - About'),
       ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(color: Colors.blue),
+              child: Text(
+                'Menú de Navegación',
+                style: TextStyle(color: Colors.white, fontSize: 24),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.home),
+              title: const Text('Home'),
+              onTap: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const MyHomePage(title: 'Flutter Demo Home Page'),
+                  ),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.list),
+              title: const Text('Lista'),
+              onTap: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ListContent()),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.info),
+              title: const Text('About'),
+              onTap: () {
+                Navigator.pop(context); // Ya estamos en esta pantalla
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.room_preferences),
+              title: const Text('Preferencias'),
+              onTap: () {
+              Navigator.pushReplacement(
+                context, 
+                MaterialPageRoute(builder: (context) => const PreferencesPage()),
+              );
+            },
+          ),
+          ],
+        ),
+      ),
       body: Consumer<AppData>(
         builder: (context, appData, child) {
-         
           nameController.text = appData.userName;
 
           return Padding(
@@ -23,7 +78,7 @@ class About extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text('Editar informacion del usuario', style: TextStyle(fontSize: 18)),
+                const Text('Editar información del usuario', style: TextStyle(fontSize: 18)),
                 const SizedBox(height: 20),
 
                 TextField(
@@ -36,33 +91,11 @@ class About extends StatelessWidget {
 
                 const SizedBox(height: 20),
 
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text('Permitir reiniciar contador'),
-                    Switch(
-                      value: appData.canResetCounter,
-                      onChanged: (value) {
-                        appData.canResetCounter = value;
-                      },
-                    ),
-                  ],
-                ),
-
                 const SizedBox(height: 30),
 
                 Text(
                   'Contador actual: ${appData.counter}',
                   style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-
-                const SizedBox(height: 30),
-
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text('Volver a Pagina 2 (Lista)'),
                 ),
               ],
             ),
