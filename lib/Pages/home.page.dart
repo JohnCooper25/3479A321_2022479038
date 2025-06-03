@@ -89,7 +89,7 @@ Widget build(BuildContext context) {
                               onPressed: () {
                                 appData.incrementCounter();
                               },
-                              child: const Text('Subir'),
+                              child: const Text('Subir.'),
                             ),
                             const SizedBox(width: 20),
                             ElevatedButton(
@@ -98,7 +98,7 @@ Widget build(BuildContext context) {
                                       appData.decrementCounter();
                                     }
                                   : null,
-                              child: const Text('Bajar'),
+                              child: const Text('Bajar.'),
                             ),
                           ],
                         ),
