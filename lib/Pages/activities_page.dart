@@ -1,6 +1,6 @@
 import 'package:application_laboratorio3/entity/actividad.dart';
 import 'package:flutter/material.dart';
-import '../entity/actividad.dart';
+//import '../entity/actividad.dart';
 import '../services/data_base.dart';
 
 class ActivitiesPage extends StatefulWidget {
