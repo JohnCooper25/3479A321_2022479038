@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
-import 'dart:io';
+
 
 class PictureScreen extends StatefulWidget {
   final CameraDescription camera;

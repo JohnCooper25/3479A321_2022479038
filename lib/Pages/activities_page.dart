@@ -1,6 +1,5 @@
 import 'package:application_laboratorio3/entity/actividad.dart';
 import 'package:flutter/material.dart';
-//import '../entity/actividad.dart';
 import '../services/data_base.dart';
 
 class ActivitiesPage extends StatefulWidget {
@@ -64,7 +63,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
       if (isEditing) {
         // Actualizar actividad
         final updatedActivity = Actividad(
-          id: activity!.id,
+          id: activity.id,
           fecha: fechaStr,
           nombre: nameController.text.trim(),
         );
