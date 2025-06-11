@@ -1,14 +1,19 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http; 
+import 'package:http/http.dart' as http;
+import 'package:camera/camera.dart';
 
 import '../provider/app_data.dart';
-
 import 'list_content.dart';
+import 'picture_screen.dart';
 
+List<CameraDescription> cameras = [];
+late CameraDescription firstCamera;
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -24,6 +29,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final logger = Logger();
   String _imageUrl = 'https://picsum.photos/250?image=28';
+  String? _imagePath;
 
   _MyHomePageState() {
     print("Constructor de _MyHomePageState");
@@ -34,6 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     _loadPreferences();
+    _loadCameras();
   }
 
   void _loadPreferences() async {
@@ -43,7 +50,13 @@ class _MyHomePageState extends State<MyHomePage> {
     appData.canResetCounter = savedCanReset;
   }
 
- 
+  Future<void> _loadCameras() async {
+    cameras = await availableCameras();
+    setState(() {
+      firstCamera = cameras.first;
+    });
+  }
+
   Future<void> _getNewImage() async {
     final counter = context.read<AppData>().counter;
     final newImageUrl = 'https://picsum.photos/250?image=${28 + counter}';
@@ -53,6 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
       if (response.statusCode == 200) {
         setState(() {
           _imageUrl = newImageUrl;
+          _imagePath = null; // reset path if loading from web
         });
       } else {
         setState(() {
@@ -62,6 +76,19 @@ class _MyHomePageState extends State<MyHomePage> {
     } catch (e) {
       setState(() {
         _imageUrl = '';
+      });
+    }
+  }
+
+  Future<void> _navigateToCamera() async {
+    final result = await Navigator.of(context).push<String>(
+      MaterialPageRoute(
+        builder: (context) => PictureScreen(camera: firstCamera),
+      ),
+    );
+    if (result != null && mounted) {
+      setState(() {
+        _imagePath = result;
       });
     }
   }
@@ -87,34 +114,37 @@ class _MyHomePageState extends State<MyHomePage> {
                 semanticsLabel: 'Dart Logo',
               ),
               const SizedBox(height: 20),
-
-            
-              Image.network(
-                _imageUrl.isNotEmpty ? _imageUrl : '',
-                width: 250,
-                height: 250,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return const Center(
-                    child: Text(
-                      'Failed to load image',
-                      style: TextStyle(color: Colors.red),
+              _imagePath != null
+                  ? Image.file(
+                      File(_imagePath!),
+                      width: 250,
+                      height: 250,
+                      fit: BoxFit.cover,
+                    )
+                  : Image.network(
+                      _imageUrl.isNotEmpty ? _imageUrl : '',
+                      width: 250,
+                      height: 250,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return const Center(
+                          child: Text(
+                            'Failed to load image',
+                            style: TextStyle(color: Colors.red),
+                          ),
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
-
               const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: _getNewImage,
                 child: const Text('Actualizar imagen'),
               ),
               const SizedBox(height: 20),
-
-              // Tarjeta con info del usuario y contador
-              SizedBox(
-                width: 550,
-                height: 450,
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: 550,
+                ),
                 child: Card(
                   margin: const EdgeInsets.all(20),
                   elevation: 5,
@@ -175,8 +205,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          const ListContent()),
+                                      builder: (context) => const ListContent()),
                                 );
                               },
                               child: const Text('Ir a Pagina 2 (Lista)'),
@@ -189,6 +218,11 @@ class _MyHomePageState extends State<MyHomePage> {
                                     }
                                   : null,
                               child: const Text('Reiniciar contador'),
+                            ),
+                            const SizedBox(height: 20),
+                            ElevatedButton(
+                              onPressed: _navigateToCamera,
+                              child: const Text('Ir a cámara'),
                             ),
                           ],
                         );
