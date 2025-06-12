@@ -1,6 +1,8 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
-
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as path;
 
 class PictureScreen extends StatefulWidget {
   final CameraDescription camera;
@@ -35,8 +37,13 @@ class _PictureScreenState extends State<PictureScreen> {
     try {
       await _initializeControllerFuture;
       final image = await _controller.takePicture();
+
+      final directory = await getApplicationDocumentsDirectory();
+      final String imageName = path.basename(image.path);
+      final File savedImage = await File(image.path).copy('${directory.path}/$imageName');
+
       if (!mounted) return;
-      Navigator.of(context).pop(image.path);
+      Navigator.of(context).pop(savedImage.path);
     } catch (e) {
       print(e);
     }

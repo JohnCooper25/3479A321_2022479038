@@ -9,8 +9,8 @@ import 'package:http/http.dart' as http;
 import 'package:camera/camera.dart';
 
 import '../provider/app_data.dart';
-import 'list_content.dart';
 import 'picture_screen.dart';
+import 'gallery_screen.dart';
 
 List<CameraDescription> cameras = [];
 late CameraDescription firstCamera;
@@ -66,7 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
       if (response.statusCode == 200) {
         setState(() {
           _imageUrl = newImageUrl;
-          _imagePath = null; // reset path if loading from web
+          _imagePath = null;
         });
       } else {
         setState(() {
@@ -93,6 +93,13 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  void _navigateToGallery() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const GalleryScreen()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     print("build");
@@ -102,54 +109,49 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              SvgPicture.asset(
-                'Assets/Icons/ICON_GAME.svg',
-                semanticsLabel: 'Dart Logo',
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SvgPicture.asset(
+              'Assets/Icons/ICON_GAME.svg',
+              semanticsLabel: 'Dart Logo',
+            ),
+            const SizedBox(height: 20),
+            Card(
+              margin: const EdgeInsets.symmetric(horizontal: 16.0),
+              elevation: 5,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
               ),
-              const SizedBox(height: 20),
-              _imagePath != null
-                  ? Image.file(
-                      File(_imagePath!),
-                      width: 250,
-                      height: 250,
-                      fit: BoxFit.cover,
-                    )
-                  : Image.network(
-                      _imageUrl.isNotEmpty ? _imageUrl : '',
-                      width: 250,
-                      height: 250,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        return const Center(
-                          child: Text(
-                            'Failed to load image',
-                            style: TextStyle(color: Colors.red),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  ClipRRect(
+                    borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
+                    child: _imagePath != null
+                        ? Image.file(
+                            File(_imagePath!),
+                            height: 250,
+                            fit: BoxFit.cover,
+                          )
+                        : Image.network(
+                            _imageUrl.isNotEmpty ? _imageUrl : '',
+                            height: 250,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return const Center(
+                                child: Padding(
+                                  padding: EdgeInsets.all(16.0),
+                                  child: Text(
+                                    'Failed to load image',
+                                    style: TextStyle(color: Colors.red),
+                                  ),
+                                ),
+                              );
+                            },
                           ),
-                        );
-                      },
-                    ),
-              const SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: _getNewImage,
-                child: const Text('Actualizar imagen'),
-              ),
-              const SizedBox(height: 20),
-              ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxWidth: 550,
-                ),
-                child: Card(
-                  margin: const EdgeInsets.all(20),
-                  elevation: 5,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
                   ),
-                  child: Padding(
+                  Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Consumer<AppData>(
                       builder: (context, appData, child) {
@@ -158,18 +160,9 @@ class _MyHomePageState extends State<MyHomePage> {
                             Text(
                               'Usuario: ${appData.userName}',
                               style: const TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(height: 20),
-                            const Text(
-                              'Pagina 1 - Home',
-                              style: TextStyle(
-                                  fontSize: 22, fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(height: 20),
-                            const Text(
-                              'Bienvenido a la pagina principal.',
-                              textAlign: TextAlign.center,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                             const SizedBox(height: 20),
                             Text(
@@ -199,17 +192,6 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                             const SizedBox(height: 20),
                             ElevatedButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const ListContent()),
-                                );
-                              },
-                              child: const Text('Ir a Pagina 2 (Lista)'),
-                            ),
-                            const SizedBox(height: 20),
-                            ElevatedButton(
                               onPressed: appData.canResetCounter
                                   ? () {
                                       appData.resetCounter();
@@ -219,18 +201,28 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                             const SizedBox(height: 20),
                             ElevatedButton(
+                              onPressed: _getNewImage,
+                              child: const Text('Actualizar imagen'),
+                            ),
+                            const SizedBox(height: 20),
+                            ElevatedButton(
                               onPressed: _navigateToCamera,
-                              child: const Text('Ir a cámara'),
+                              child: const Text('Ir a camara'),
+                            ),
+                            const SizedBox(height: 20),
+                            ElevatedButton(
+                              onPressed: _navigateToGallery,
+                              child: const Text('Ver galeria'),
                             ),
                           ],
                         );
                       },
                     ),
                   ),
-                ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
